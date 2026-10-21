@@ -1,0 +1,13 @@
+spring:
+  application:
+    name: usuarios
+  cloud: # Debido a que se configuró el micro gateway en el docker compose, se agregaron las librerias spring-retry y spring-boot-starter-aop
+    config: # Debido a que se configuró el micro gateway en el docker compose, se agregaron las librerias spring-retry y spring-boot-starter-aop
+      fail-fast: true #Fuerza al Gateway a fallar rápido si no conecta, activando el reintento
+      retry: # Debido a que se configuró el micro gateway en el docker compose, se agregaron las librerias spring-retry y spring-boot-starter-aop
+        max-attempts: 6 # Intentará conectarse hasta 6 veces
+        initial-interval: 3000 # Esperará 3 segundos entre el primer y segundo intento
+        max-interval: 5000 # El tiempo máximo de espera entre intentos será de 5 segundos
+        multiplier: 1.2 # Multiplica el tiempo de espera en cada intento fallido (3s, 3.6s, 4.3s...)
+  config:
+    import: "optional:configserver:${spring.cloud.config.uri}" # http://localhost:8888"
